@@ -21,35 +21,44 @@ plotdir <- "new_model/figures"
 # Source helper functions
 source(file.path(codedir, "for_TMB.R"))
 
+# Fit to NJ data?
+# FALSE - fits to Gulf of Mexico data
+# TRUE - fits to NJ data
+nj_yn <- T
+if(nj_yn){
+  # Creeks
+  creeks <- c("Raritan-Downstream", "Raritan-Upstream", "Passaic-Downstream")
+  files <- paste0(tolower(creeks), ".dat")
+}else{
+  # Creeks
+  creeks <- paste("Creek", 1:4)
+  files <- paste0("crk", 1:4, ".dat")
+}
+
 
 # Fit models
 ################################################################################
 
+# Number of creeks
+ncreeks <- length(creeks)
+
 # Setup empty AIC container
 # 3 creeks, 3 dispersal models, 4 model structures
-aic.emp <- array(0, dim=c(3,3,4), dimnames = list(creek=NULL, 
+aic.emp <- array(0, dim=c(ncreeks,3,4), dimnames = list(creek=NULL, 
                                               disp.mod=c('normal', 'exponential', 'cauchy'),
                                               mod = c('constant', 'fixed effect', 'random effect', 'asymptote')))
 # Setup empty model fits constainer
 emp.mod.fits <- list()
 
 # Setup containers for "no dispersal" models 
-aic.no.dispersal <- numeric(4)
+aic.no.dispersal <- numeric(ncreeks)
 no.dispersal.fits <- list()
 
-# Creeks
-creeks <- c("Raritan-Downstream", "Raritan-Upstream", "Passaic-Downstream")
-files <- paste0(tolower(creeks), ".dat")
-
-# Loop through creekas and fit models
-i <- 3
-for(i in 1:3) {
+# Loop through creeks and fit models
+i <- 1
+for(i in 1:ncreeks) {
   
-  # Creek
-  creek_do <- creeks[i]
-  file_do <- files[i]
-  
-  # Read data
+  # Data structure
   # Datafile is a list with following:
   # ncreeks = # of creeks
   # nrel = # of released fish
@@ -59,12 +68,13 @@ for(i in 1:3) {
   # count.mat = # of tagged fish at a date, site, trap
   # distances = distances of sites from tagging location (vector length of nsites)
   # times = days since time of tagging (vector length of nperiods)
-  # filename <- file.path(datadir, file_do)
-  # dat <- readRDS(file.path(datadir, file_do))
-  # dat <- read.data(file.path(datadir, "crk3.dat"))
-  dat <- read.data(file.path(datadir, file_do))
   
-  #save(data)
+  # Creek
+  creek_do <- creeks[i]
+  file_do <- files[i]
+  
+  # Read data
+  dat <- read.data(file.path(datadir, file_do))
   
   # Setup initial parameters
   Parameters <- list(
@@ -110,12 +120,12 @@ for(i in 1:3) {
                       error = function(e) NA)
       
       # Record AIC of model fit
-      aic.emp[creek, disp.mod, mod] <- ifelse(!is.na(Opt[1]), 
-                                              ifelse(sdreport(model)$pdHess, TMBhelper::TMBAIC(Opt),
-                                              NA), NA)
+      aic.emp[i, disp.mod, mod] <- ifelse(!is.na(Opt[1]), 
+                                          ifelse(sdreport(model)$pdHess, TMBhelper::TMBAIC(Opt),
+                                          NA), NA)
       
       # Record model fit
-      emp.mod.fits[[creek]][[disp.mod]][[mod]] <- model
+      emp.mod.fits[[i]][[disp.mod]][[mod]] <- model
     }
     
   }
@@ -136,12 +146,12 @@ for(i in 1:3) {
                   error = function(e) NA)
   
   # Record AIC of "no dispersal" model
-  aic.no.dispersal[creek] <- ifelse(!is.na(Opt[1]), 
+  aic.no.dispersal[i] <- ifelse(!is.na(Opt[1]), 
                                     ifelse(sdreport(model)$pdHess, TMBhelper::TMBAIC(Opt),
                                            NA), NA)
   
   # Record "no dispersal" model fit
-  no.dispersal.fits[[creek]] <- model
+  no.dispersal.fits[[i]] <- model
   
 }
 
@@ -161,7 +171,7 @@ best.mods <- apply(aic.emp[,,3:4], 1, function(x) which(x==min(x, na.rm=TRUE), a
 report.ls <- list()
 
 # Loop through creeks and extract predictions from best model
-for(creek in 1:4) {
+for(creek in 1:ncreeks) {
   report.ls[[creek]] <- emp.mod.fits[[creek]][[best.mods[1,creek]]][[best.mods[2,creek]+2]]$report()[[1]] %>% 
     data.frame()
   names(report.ls[[creek]]) <- c('obscount', 'predcount', 'times', 'distances', 

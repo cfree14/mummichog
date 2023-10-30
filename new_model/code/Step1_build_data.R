@@ -80,7 +80,7 @@ table(data_recaps$site)
 sites <- c("Raritan-Downstream", "Raritan-Upstream", "Passaic-Downstream")
 
 # Loop through sites and build data
-i <- 3
+i <- 2
 for(i in 1:length(sites)){
   
   # Site
