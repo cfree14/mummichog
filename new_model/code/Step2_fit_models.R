@@ -113,7 +113,10 @@ for(i in 1:ncreeks) {
       if(mod == 2) Parameters$log_sig_disp_mu <- 0
       
       # Fit model
-      model <- TMB::MakeADFun(data=to.fit$Data, parameters=Parameters, DLL="DM_MM_sig", map=to.fit$Map,
+      model <- TMB::MakeADFun(data=to.fit$Data, 
+                              parameters=Parameters, 
+                              DLL="DM_MM_sig", 
+                              map=to.fit$Map,
                               random = to.fit$Random)
       model$env$beSilent()
       Opt <- tryCatch(nlminb(start=model$par, objective=model$fn, gradient=model$gr),
