@@ -1,0 +1,59 @@
+# number of locations								
+1								
+# initial number of tagged fish released								
+293								
+# number of resample sites								
+11								
+# number of resampling times (events)								
+4								
+# number of traps per resample site								
+3								
+# counts of tagged fish rows are site*event, columns are replicate traps								
+0	3	1
+0	1	0
+17	7	0
+27	4	1
+5	1	0
+0	0	0
+0	13	6
+9	5	1
+2	4	3
+0	0	0
+0	0	0
+0	5	9
+0	0	0
+12	3	10
+4	5	2
+7	2	9
+2	0	3
+8	0	0
+1	0	0
+8	1	6
+3	4	0
+1	0	0
+0	1	1
+0	0	0
+0	0	0
+0	0	0
+0	1	0
+0	1	0
+1	1	0
+1	0	1
+0	0	0
+0	0	0
+0	0	1
+0	0	0
+0	0	0
+0	0	0
+1	0	0
+0	0	0
+0	0	0
+0	0	0
+1	0	0
+0	0	0
+0	0	0
+0	0	0						
+# distances - rows are creeks, columns are sites. Use -9 to fill missing sites in matrix								
+200	150	100	50	20	0	-20	-50	-100	-150	-200	
+# times rows are creeks, columns are sampling events								
+2	9	90	402
