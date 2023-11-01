@@ -91,7 +91,7 @@ for(i in 1:ncreeks) {
   
   # Loop through dispersal types
   # Half normal, exponential, half cauchy
-  disp.mod <- "normal"
+  disp.mod <- "exponential"
   for(disp.mod in c('normal', 'exponential', 'cauchy')) {
     
     # Setup empty model fit
@@ -99,7 +99,7 @@ for(i in 1:ncreeks) {
     
     # Loop through model structures
     # independent, random effect, 2-parameter asymptotic function
-    mod <- 1
+    mod <- 3
     for(mod in 1:4) {
       
       # Build data to fit model to

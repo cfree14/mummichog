@@ -195,7 +195,8 @@ for(ii in 1:nreps) {
       Parameters$log_sig_disp_mu <- 0
       Parameters$log_sig_disp_eps <- rep(0, nperiods)
       
-      model <- MakeADFun(data = input.ls$Data, parameters = Parameters, 
+      model <- MakeADFun(data = input.ls$Data, 
+                         parameters = Parameters, 
                          map = input.ls$Map, 
                          DLL="DM_MM_sig")
       model$env$beSilent()
@@ -290,7 +291,7 @@ sim.res.df <- do.call(rbind, sim.ls)
 sim.res.df$disp.str[is.na(sim.res.df$disp.str)] <- 'no dispersal'
 
 # Save results
-save(sim.res.df, aic.sim, annual.mort, sig.disp, nreps, file = 'Code/sim-results.RData')
+save(sim.res.df, aic.sim, annual.mort, sig.disp, nreps, file = file.path(datadir, "sim-results.RData"))
 
 
 

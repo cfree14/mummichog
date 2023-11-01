@@ -110,11 +110,11 @@ stripT <- gTree(name = "Strip_top", children = gList(
 z <- gtable_add_grob(z, stripR, t = min(posR$t)+1, l = max(posR$r) + 1, b = max(posR$b)+1, name = "strip-right") %>%
   gtable_add_grob(stripT, t = min(posT$t), l = min(posT$l), r = max(posT$r), name = "strip-top")
 
-png('Figs/survival-results.png', height=8, width=8, units = 'in', res=200)
+png('original_model_cleaned/figures/survival-results.png', height=8, width=8, units = 'in', res=200)
 grid.newpage()
 grid.draw(z)
 dev.off()
-system('open Figs/survival-results.png')
+system('open original_model_cleaned/figures/survival-results.png')
 
 sim.res.df %>%
   mutate(rel.err = (annual.mort-annual.mort.true)/annual.mort.true) %>%
@@ -172,11 +172,11 @@ stripT <- gTree(name = "Strip_top", children = gList(
 z <- gtable_add_grob(z, stripR, t = min(posR$t)+1, l = max(posR$r) + 1, b = max(posR$b)+1, name = "strip-right") %>%
   gtable_add_grob(stripT, t = min(posT$t), l = min(posT$l), r = max(posT$r), name = "strip-top")
 
-png('Figs/dispersal-results.png', height=8, width=8, units = 'in', res=200)
+png('original_model_cleaned/figures/dispersal-results.png', height=8, width=8, units = 'in', res=200)
 grid.newpage()
 grid.draw(z)
 dev.off()
-system('open Figs/dispersal-results.png')
+system('open original_model_cleaned/figures/dispersal-results.png')
 
 sim.res.df %>%
   mutate(rel.err = (fifty.pct-fifty.pct.true)/fifty.pct.true) %>%
@@ -207,7 +207,7 @@ paste(round(aic.mns, 1), '±', round(aic.sds, 1)) %>% c(paste0(winning.pct*100, 
   matrix(nrow=3, dimnames=list('Simulation model'=Hmisc::capitalize(disp.mods), 
                                c(Hmisc::capitalize(disp.mods), 
                                  '% correct model chosen'))) %>%
-  write.csv(file='Figs/AIC.csv')
+  write.csv(file='original_model_cleaned/figures/AIC.csv')
 
 
 # Format results table ----------------------------------------------------
